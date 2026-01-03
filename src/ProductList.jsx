@@ -252,15 +252,14 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(false);
     };
+    const calculateTotalQuantity = () => {
+        return CartItems ? CartItems.reduce((total, item) => total + item.quantity, 0) : 0;
+         };
 
     const [addedToCart, setAddedToCart] = useState({});
     const handleAddToCart = (product) => {
   dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
-
-  setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
-    ...prevState, // Spread the previous state to retain existing entries
-    [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
-  }));
+  setAddedToCart(prev => ({ ...prev, [product.name]: true }));
 };
     return (
         <div>
@@ -283,7 +282,7 @@ function ProductList({ onHomeClick }) {
                 </div>
             </div>
             {!showCart ? (
-                <div className="product-grid">
+            <div className="product-grid">
             {plantsArray.map((category, index) => ( 
   <div key={index}> 
     <h1>
